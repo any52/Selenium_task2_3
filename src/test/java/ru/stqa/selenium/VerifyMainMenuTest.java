@@ -37,15 +37,12 @@ public class VerifyMainMenuTest {
         for (int i = 0; i < pointsOfMenu.size(); i ++){
             pointsOfMenu.get(i).click();
             Assertions.assertTrue(checkTitleOfPage());
-            pointsOfMenu.clear();
             pointsOfMenu = driver.findElements(By.id ("app-"));
             subpointsOfMenu = pointsOfMenu.get(i).findElements(By.className ("name"));
             if (subpointsOfMenu.size()>0){
                 for (int j = 0; j < subpointsOfMenu.size(); j ++){
                     subpointsOfMenu.get(j).click();
                     Assertions.assertTrue(checkTitleOfPage());
-                    subpointsOfMenu.clear();
-                    pointsOfMenu.clear();
                     pointsOfMenu = driver.findElements(By.id ("app-"));
                     subpointsOfMenu = pointsOfMenu.get(i).findElements(By.className ("name"));
                 }
