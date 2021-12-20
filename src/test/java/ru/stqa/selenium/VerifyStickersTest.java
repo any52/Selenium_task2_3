@@ -31,9 +31,9 @@ public class VerifyStickersTest {
         driver.get("http://localhost/litecart/en/");
         List<WebElement> products = new ArrayList<>();
         List<WebElement> stickers = new ArrayList<>();
-        products = driver.findElements(By.cssSelector("[class = 'product column shadow hover-light']"));
+        products = driver.findElements(By.cssSelector(".product"));
         for (int i = 0; i < products.size(); i ++){
-            stickers = products.get(i).findElements(By.cssSelector("[class *= 'sticker']"));
+            stickers = products.get(i).findElements(By.cssSelector(".sticker"));
             Assertions.assertEquals(EXPECTED_STICKER, stickers.size());
         }
     }
