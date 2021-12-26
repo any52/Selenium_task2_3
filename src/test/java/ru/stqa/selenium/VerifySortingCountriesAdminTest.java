@@ -35,25 +35,21 @@ public class VerifySortingCountriesAdminTest {
 
         List<WebElement> countryWebElements = new ArrayList<>();
         List<WebElement> zoneNamesWebElements = new ArrayList<>();
-        List<WebElement> selectZoneNamesWebElements = new ArrayList<>();
         List<String> sortedZoneNames = new ArrayList<>();
         List<String> zoneNames = new ArrayList<>();
         countryWebElements = driver.findElements(By.cssSelector(".row td:nth-child(3) a"));
         for (int i = 0; i <  countryWebElements.size(); i ++){
             countryWebElements.get(i).click();
             zoneNamesWebElements = driver.findElements(By.cssSelector("#content td:nth-child(3) select"));
-            for(int j =0; j < zoneNamesWebElements.size(); j++){
+            for(int j =0; j < zoneNamesWebElements.size(); j++) {
                 Select selectZones = new Select(zoneNamesWebElements.get(j));
-                selectZoneNamesWebElements = selectZones.getOptions();
-                for (int k = 0; k < selectZoneNamesWebElements.size(); k ++) {
-                    zoneNames.add(selectZoneNamesWebElements.get(k).getAttribute("textContent"));
-                    sortedZoneNames.add(selectZoneNamesWebElements.get(k).getAttribute("textContent"));
-                }
-                Collections.sort(sortedZoneNames);
-                Assertions.assertEquals(sortedZoneNames, zoneNames);
-                zoneNames.clear();
-                sortedZoneNames.clear();
+                zoneNames.add(selectZones.getFirstSelectedOption().getAttribute("textContent"));
+                sortedZoneNames.add(selectZones.getFirstSelectedOption().getAttribute("textContent"));
             }
+            Collections.sort(sortedZoneNames);
+            Assertions.assertEquals(sortedZoneNames, zoneNames);
+            zoneNames.clear();
+            sortedZoneNames.clear();
             driver.get("http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones");
             countryWebElements = driver.findElements(By.cssSelector(".row td:nth-child(3) a"));
         }
