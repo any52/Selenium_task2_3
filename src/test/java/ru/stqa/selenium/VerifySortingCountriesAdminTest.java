@@ -42,9 +42,10 @@ public class VerifySortingCountriesAdminTest {
             countryWebElements.get(i).click();
             zoneNamesWebElements = driver.findElements(By.cssSelector("#content td:nth-child(3) select"));
             for(int j =0; j < zoneNamesWebElements.size(); j++) {
-                Select selectZones = new Select(zoneNamesWebElements.get(j));
-                zoneNames.add(selectZones.getFirstSelectedOption().getAttribute("textContent"));
-                sortedZoneNames.add(selectZones.getFirstSelectedOption().getAttribute("textContent"));
+                String zoneName = zoneNamesWebElements.get(j).findElement(By.cssSelector("[selected = selected]"))
+                        .getAttribute("textContent");
+                zoneNames.add(zoneName);
+                sortedZoneNames.add(zoneName);
             }
             Collections.sort(sortedZoneNames);
             Assertions.assertEquals(sortedZoneNames, zoneNames);
