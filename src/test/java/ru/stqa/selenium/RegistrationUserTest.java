@@ -4,26 +4,39 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
 import java.util.concurrent.TimeUnit;
 
 public class RegistrationUserTest {
-    private WebDriver driver;
+    private WebDriver driverChrome;
+    private WebDriver driverFirefox;
+    private WebDriver driverEdge;
 
     @BeforeEach
     public void start(){
-
-        driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driverChrome = new ChromeDriver();
+        driverChrome.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driverFirefox = new FirefoxDriver();
+        driverFirefox.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driverEdge = new EdgeDriver();
+        driverEdge.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     }
 
     @Test
     public void registrationUserTest()  {
-        
+        checkRegistrationUser(driverChrome);
+        checkRegistrationUser(driverFirefox);
+        checkRegistrationUser(driverEdge);
+    }
+
+    public void checkRegistrationUser(WebDriver driver){
         String password = "1234qwert";
         String randomIndex  = String.valueOf(Math.random());
         String email = "irina_ivanova" +randomIndex + "@mail.ru";
@@ -36,9 +49,10 @@ public class RegistrationUserTest {
         driver.findElement(By.name("postcode")).sendKeys("20107");
         driver.findElement(By.name("city")).sendKeys("Finics");
 
-        WebElement selectElemCountry = driver.findElement(By.name("country_code"));
-        Select selectCountry = new Select(selectElemCountry);
-        selectCountry.selectByValue("US");
+        WebElement selectElemCountry = driver.findElement(By.cssSelector(".selection span b"));
+        selectElemCountry.click();
+        WebElement search = driver.findElement(By.cssSelector("[type = search]"));
+        search.sendKeys("United States" + Keys.ENTER);
 
         WebElement selectElemZone = driver.findElement(By.cssSelector(".content tr:nth-child(5) td:nth-child(2) select"));
         Select selectZone = new Select(selectElemZone);
@@ -61,7 +75,11 @@ public class RegistrationUserTest {
 
     @AfterEach
     public void stop(){
-        driver.quit();
-        driver = null;
+        driverChrome.quit();
+        driverChrome = null;
+        driverFirefox.quit();
+        driverFirefox = null;
+        driverEdge.quit();
+        driverEdge = null;
     }
 }
