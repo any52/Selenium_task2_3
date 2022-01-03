@@ -29,7 +29,8 @@ public class VerifyAddProductTest {
     public void addProductTest()  {
         String absolutePath = new File("").getAbsolutePath();
         String absolutePathToImage = absolutePath + "\\Img.jpg";
-        String nameProduct = "Basketball";
+        String randomIndex  = String.valueOf(Math.random());
+        String nameProduct = "Basketball with index = " + randomIndex;
 
         driver.get("http://localhost/litecart/admin/");
         driver.findElement(By.name("username")).sendKeys("admin");
@@ -38,7 +39,7 @@ public class VerifyAddProductTest {
 
         driver.findElement(By.cssSelector("#box-apps-menu li:nth-child(2)")).click();
         driver.findElement(By.cssSelector("#content div a:nth-child(2)")).click();
-        driver.findElements(By.cssSelector("[name = status]")).get(0).click();//
+        driver.findElements(By.cssSelector("[name = status]")).get(0).click();
         driver.findElement(By.cssSelector("[name ='name[en]']")).sendKeys(nameProduct);
         driver.findElement(By.cssSelector("[name = code]")).sendKeys("100678");
         Select defaultCategorySelect = new Select(driver.findElement(By.cssSelector("[name = default_category_id]")));
