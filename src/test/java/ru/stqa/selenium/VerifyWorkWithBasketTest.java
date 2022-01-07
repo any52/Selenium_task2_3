@@ -1,9 +1,6 @@
 package ru.stqa.selenium;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -25,14 +22,14 @@ public class VerifyWorkWithBasketTest {
     public void start(){
 
         driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
     }
 
     @Test
     public void basketTest()  {
-        addProduct(driver);
-        addProduct(driver);
-        addProduct(driver);
+        for(int i =0; i < EXPECTED_NUMBER_PRODUCTS; i++){
+            addProduct(driver);
+       }
         checkBasketAndRemoveProducts(driver, EXPECTED_NUMBER_PRODUCTS);
     }
 
@@ -69,24 +66,19 @@ public class VerifyWorkWithBasketTest {
             removeProductButtons = driver.findElements(By.cssSelector("[name = remove_cart_item]"));
             if (removeProductButtons.size() > 0) {
                 WebDriverWait wait = new WebDriverWait(driver, 10/*seconds*/);
+                WebElement line  = driver.findElement(By.cssSelector("#box-checkout-summary tr:nth-child(2)"));
                 removeProductButtons.get(0).click();
-                wait.until(stalenessOf(driver.findElement(By.cssSelector("#box-checkout-summary tr:nth-child(2)"))));
+                wait.until(stalenessOf(line));
                 wait.until(numberOfElementsToBe((By.cssSelector("[name = remove_cart_item]")), (removeProductButtons.size() - 1)));
             }
         }
     }
 
     public void checkSizePresence(WebDriver driver ){
-        try {
-            driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
             if (driver.findElements(By.cssSelector("[name = 'options[Size]']")).size() > 0){
                 Select sizeSelect = new Select(driver.findElements(By.cssSelector("[name = 'options[Size]']")).get(0));
                 sizeSelect.selectByValue("Small");
             }
-
-        } finally {
-            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        }
     }
 
     @AfterEach
